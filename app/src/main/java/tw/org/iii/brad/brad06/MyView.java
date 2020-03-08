@@ -16,11 +16,12 @@ import java.util.LinkedList;
 
 public class MyView extends View {
     private Paint paint;
-    private LinkedList<LinkedList<HashMap<String, Float>>> lines;
+    private LinkedList<LinkedList<HashMap<String, Float>>> lines, recycler;
 
     public MyView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         lines = new LinkedList<>();
+        recycler = new LinkedList<>();
         paint = new Paint();
         paint.setColor(Color.BLUE);
         paint.setStrokeWidth(10);
@@ -44,6 +45,7 @@ public class MyView extends View {
     public boolean onTouchEvent(MotionEvent event) {
 
         if (event.getAction() ==  MotionEvent.ACTION_DOWN){
+            recycler.clear();
             LinkedList<HashMap<String,Float>> line = new LinkedList<>();
             lines.add(line);
         }
@@ -62,5 +64,20 @@ public class MyView extends View {
         lines.clear();
         invalidate();
     }
+
+    public void undo(){
+        if (lines.size()>0) {
+            recycler.add(lines.removeLast());
+            invalidate();
+        }
+    }
+
+    public void redo(){
+        if (recycler.size()>0) {
+            lines.add(recycler.removeLast());
+            invalidate();
+        }
+    }
+
 
 }
