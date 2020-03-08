@@ -14,9 +14,16 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         >
-
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Clear"
+            android:textAllCaps="false"
+            android:onClick="clearMyView"
+            />
     </LinearLayout>
     <tw.org.iii.brad.brad06.MyView
+        android:id="@+id/myView"
         android:layout_width="0dp"
         android:layout_weight="7"
         android:layout_height="match_parent"

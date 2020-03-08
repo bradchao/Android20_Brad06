@@ -57,4 +57,10 @@ public class MyView extends View {
 
         return true;
     }
+
+    public void clear(){
+        lines.clear();
+        invalidate();
+    }
+
 }
