@@ -17,13 +17,15 @@ import java.util.LinkedList;
 public class MyView extends View {
     private Paint paint;
     private LinkedList<LinkedList<HashMap<String, Float>>> lines, recycler;
+    private int color = Color.BLUE;
 
     public MyView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+
         lines = new LinkedList<>();
         recycler = new LinkedList<>();
         paint = new Paint();
-        paint.setColor(Color.BLUE);
+        paint.setColor(color);
         paint.setStrokeWidth(10);
     }
 
@@ -32,7 +34,10 @@ public class MyView extends View {
         super.onDraw(canvas);
 
         for(LinkedList<HashMap<String,Float>> line : lines){
-            for (int i = 1; i<line.size(); i++){
+            HashMap<String,Float> color = line.get(0);
+            // Float -> int?
+            paint.setColor(color.get("color").intValue());
+            for (int i = 2; i<line.size(); i++){
                 HashMap<String,Float> p0 = line.get(i-1);
                 HashMap<String,Float> p1 = line.get(i);
                 canvas.drawLine(p0.get("x"), p0.get("y"), p1.get("x"), p1.get("y"),paint);
@@ -41,12 +46,26 @@ public class MyView extends View {
 
     }
 
+    public void setColor(int newColor){
+        color = newColor;
+        invalidate();
+    }
+
+    public int getColor(){
+        return color;
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
         if (event.getAction() ==  MotionEvent.ACTION_DOWN){
             recycler.clear();
             LinkedList<HashMap<String,Float>> line = new LinkedList<>();
+
+            HashMap<String,Float> setting = new HashMap<>();
+            setting.put("color", (float)color); // int -> float => OK; int -> float -> Float
+            line.add(setting);
+
             lines.add(line);
         }
 
